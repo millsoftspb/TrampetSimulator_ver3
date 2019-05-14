@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageOctav2"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageOctav1"
+        app:srcCompat="@drawable/valve_png_up" />
+
+    <ImageView
+        android:id="@+id/imageOctav1"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/imageOctav2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/valve_png_up" />
+
+    <ImageView
+        android:id="@+id/imageValve1"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/imageValve2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/valve_png_up" />
+
+    <ImageView
+        android:id="@+id/imageValve3"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageValve2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/valve_png_up" />
+
+    <ImageView
+        android:id="@+id/imageValve2"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/imageValve3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageValve1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/valve_png_up" />
+
+    <ImageView
+        android:id="@+id/imageTrumpet"
+        android:layout_width="539dp"
+        android:layout_height="189dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageSoundMic"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/trumpetcut" />
+
+    <ImageView
+        android:id="@+id/imageSoundMic"
+        android:layout_width="106dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageTrumpet"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/sound" />
+</android.support.constraint.ConstraintLayout>
