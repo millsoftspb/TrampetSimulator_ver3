@@ -1,23 +1,50 @@
 package com.millsoftspb.trampetsimulator_ver3;
 
-import android.media.MicrophoneInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
     View mDecorView;
+    TextView textView;//temp
     private ImageView valve_1, valve_2, valve_3;
     boolean isDownValve_1, isDownValve_2, isDownValve_3 = false;
     SoundMeter soundMeter;
+    private Timer myTimer;
+    TrumpetModel trumpet;
+    private int note;
+    double amplitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //temp
+        textView = findViewById(R.id.textView);
+
+        //init trumpet;
+        trumpet = new TrumpetModel(this);
+
+
+        //init timer
+        myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 300);
 
         //init soundmeter
         soundMeter = new SoundMeter();
@@ -77,5 +104,53 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             break;
         }
         return true;
+    }
+
+
+    private void TimerMethod() {
+        this.runOnUiThread(Timer_Tick);
+    }
+
+    private Runnable Timer_Tick = new Runnable() {
+        public void run() {
+            amplitude = soundMeter.getAmplitude();
+
+            textView.setText(String.valueOf(amplitude));//temp
+
+     if(amplitude>600) {
+
+             //******D*******
+             if (isDownValve_1&!isDownValve_2&isDownValve_3) note = trumpet.soundD;//  -=тТт=<
+
+             //******F*******
+             if (isDownValve_1&!isDownValve_2&!isDownValve_3) note = trumpet.soundF;//  -=тТT=<
+
+             //******B*******
+             if (!isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundB;//  -=TтТ=<
+
+             //******E*******
+             if (isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundE;//-  -=ттТ=<
+
+             //******A*******
+             if (isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundA;//+  -=ттТ=<
+
+             //******C*******
+             if (!isDownValve_1&!isDownValve_2&!isDownValve_3) note = trumpet.soundC;//-  -=ТТТ=<
+
+
+             trumpet.play(note);
+         }
+     else trumpet.stop();
+
+     }
+
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (trumpet != null) trumpet.destroy();
+        if (soundMeter != null) soundMeter.destroy();
     }
 }

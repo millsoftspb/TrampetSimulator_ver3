@@ -2,98 +2,60 @@ package com.millsoftspb.trampetsimulator_ver3;
 
 import android.content.Context;
 import android.media.AudioAttributes;
+import android.media.MediaMetadataRetriever;
 import android.media.SoundPool;
+import android.net.Uri;
 
 public class TrumpetModel {
-    private final int noteA = 1, noteB = 2, noteC = 3, noteD = 4, noteE = 5, noteF = 6, noteG = 7;
-    SoundPool soundPool;
-    int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
-    float volume;
+
+    public   int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
+    private int currentSound = 0;
+    private SoundPool sounds;
+    public long millSecond;
 
 
-    TrumpetModel(Context context) {
-        Context myContext;
-        myContext = context;
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+    //constructor trumpet
+    public TrumpetModel(Context myContext) {
+
+        AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
-        soundPool = new SoundPool.Builder()
-                .setMaxStreams(4)
-                .setAudioAttributes(audioAttributes)
+        sounds = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
                 .build();
-        soundA = soundPool.load(myContext, R.raw.a4, 1);
-        soundB = soundPool.load(myContext, R.raw.b4, 1);
-        soundC = soundPool.load(myContext, R.raw.c4, 1);
-        soundD = soundPool.load(myContext, R.raw.d4, 1);
-        soundE = soundPool.load(myContext, R.raw.e4, 1);
-        soundF = soundPool.load(myContext, R.raw.f4, 1);
-        soundG = soundPool.load(myContext, R.raw.g4, 1);
+
+        //filling the soundpool filling with sounds
+        soundA = sounds.load(myContext, R.raw.a4, 1);
+        soundB = sounds.load(myContext, R.raw.b4, 1);
+        soundC = sounds.load(myContext, R.raw.c4, 1);
+        soundD = sounds.load(myContext, R.raw.d4, 1);
+        soundE = sounds.load(myContext, R.raw.e4, 1);
+        soundF = sounds.load(myContext, R.raw.f4, 1);
+        soundG = sounds.load(myContext, R.raw.g4, 1);
+
     }
 
-    public void play(int note) {
+    //start play
+    public void play(int sound){
+         if (currentSound!=sound || currentSound == 0) {
+             sounds.stop(currentSound);
 
-        switch (note) {
-            case noteA:
-                if (volume <= 0)
-                    soundPool.stop(soundA);
-                else {
-                    soundPool.play(soundA, volume, volume, 0, 0, 1);
-                }
-                break;
+             sounds.play(sound, 1, 1, 0, -1, 1);
 
-            case noteB:
-                if (volume <= 0)
-                    soundPool.stop(soundB);
-                else {
-                    soundPool.play(soundB, volume, volume, 0, 0, 1);
-                }
-                break;
-
-            case noteC:
-                if (volume <= 0)
-                    soundPool.stop(soundC);
-                else {
-                    soundPool.play(soundC, volume, volume, 0, 0, 1);
-                }
-                break;
-
-            case noteD:
-                if (volume <= 0) {
-                    soundPool.stop(soundD);
-                } else {
-                    soundPool.play(soundD, volume, volume, 0, 0, 1);
-                }
-                break;
-
-            case noteE:
-                if (volume <= 0)
-                    soundPool.stop(soundE);
-                else {
-                    soundPool.play(soundE, volume, volume, 0, 0, 1);
-                }
-                break;
-
-            case noteF:
-                if (volume <= 0)
-                    soundPool.stop(soundF);
-                else {
-                    soundPool.play(soundF, volume, volume, 0, 0, 1);
-                }
-                break;
-
-            case noteG:
-                if (volume <= 0)
-                    soundPool.stop(soundG);
-                else {
-                    soundPool.play(soundG, volume, volume, 0, 0, 1);
-                }
-                break;
-        }
+             currentSound = sound;
+         }
     }
 
-    void destroyTrumpet() {
-        soundPool.release();
-        soundPool = null;
+    //stop play
+    public void stop(){
+        if (currentSound!=0) sounds.autoPause();
     }
+
+    //destroy trumpet
+    public void destroy(){
+        if (sounds != null) sounds.release();
+        sounds = null;
+    }
+
 }
