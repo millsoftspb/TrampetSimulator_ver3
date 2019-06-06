@@ -6,15 +6,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
+    static TextView textView, textView2, textView3, textTimerTick;//temp
+    int tick = 0;//temp
     View mDecorView;
-    TextView textView;//temp
     private ImageView valve_1, valve_2, valve_3;
     boolean isDownValve_1, isDownValve_2, isDownValve_3 = false;
     SoundMeter soundMeter;
@@ -23,7 +23,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private int note;
     double amplitude;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +30,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         //temp
         textView = findViewById(R.id.textView);
+        textView2 = findViewById(R.id.textView2);
+        textView3 = findViewById(R.id.textView3);
+        textTimerTick = findViewById(R.id.textTimerTick);
 
         //init trumpet;
         trumpet = new TrumpetModel(this);
-
 
         //init timer
         myTimer = new Timer();
@@ -44,7 +45,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 TimerMethod();
             }
 
-        }, 0, 300);
+        }, 0, 100);
 
         //init soundmeter
         soundMeter = new SoundMeter();
@@ -63,7 +64,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         valve_3 = findViewById(R.id.imageValve3);
         valve_3.setOnTouchListener(this);
     }
-
+    //==============================================================================================
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
@@ -88,7 +89,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     valve_2.setImageResource(R.drawable.valve_png_up);
                 }
             }
-
             break;
             //**************Valve_3*******************
             case (R.id.imageValve3): {
@@ -100,53 +100,65 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     valve_3.setImageResource(R.drawable.valve_png_up);
                 }
             }
-
             break;
+            //******************************************
         }
         return true;
     }
-
-
+//==================================================================================================
     private void TimerMethod() {
         this.runOnUiThread(Timer_Tick);
     }
-
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
+
+            //temp
+            tick = tick + 1;
+            textTimerTick.setText(String.valueOf(tick));
+
+            //get Mic amplitude
             amplitude = soundMeter.getAmplitude();
 
-            textView.setText(String.valueOf(amplitude));//temp
+            if(amplitude<3000.0)trumpet.stop();
 
-     if(amplitude>600) {
+            textView.setText(String.valueOf(amplitude));//temp
+            textView3.setText("");//temp
 
              //******D*******
-             if (isDownValve_1&!isDownValve_2&isDownValve_3) note = trumpet.soundD;//  -=тТт=<
-
+             if (isDownValve_1&!isDownValve_2&isDownValve_3) {
+                 note = trumpet.soundD;//  >=тТт=-
+                 textView2.setText(">=тТт=-");
+             }
              //******F*******
-             if (isDownValve_1&!isDownValve_2&!isDownValve_3) note = trumpet.soundF;//  -=тТT=<
-
+             if (isDownValve_1&!isDownValve_2&!isDownValve_3) {
+                 note = trumpet.soundF;//  >=TТт=-
+                 textView2.setText(">=TТт=-");
+             }
              //******B*******
-             if (!isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundB;//  -=TтТ=<
-
+             if (!isDownValve_1&isDownValve_2&!isDownValve_3) {
+                 note = trumpet.soundB;//  >=TтT=-
+                 textView2.setText(">=TтT=-");
+             }
              //******E*******
-             if (isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundE;//-  -=ттТ=<
-
+             if (isDownValve_1&isDownValve_2&!isDownValve_3) {
+                 note = trumpet.soundE;//  >=Tтт=-
+                 textView2.setText(">=Tтт=-");
+             }
              //******A*******
-             if (isDownValve_1&isDownValve_2&!isDownValve_3) note = trumpet.soundA;//+  -=ттТ=<
-
+             if (isDownValve_1&isDownValve_2&!isDownValve_3) {
+                 note = trumpet.soundA;//  >=Tтт=-
+                 textView2.setText(">=Tтт=-");
+             }
              //******C*******
-             if (!isDownValve_1&!isDownValve_2&!isDownValve_3) note = trumpet.soundC;//-  -=ТТТ=<
-
-
-             trumpet.play(note);
-         }
-     else trumpet.stop();
-
+             if (!isDownValve_1&!isDownValve_2&!isDownValve_3) {
+                 note = trumpet.soundC;//  >=TTT=-
+                 textView2.setText(">=TTT=-");
+             }
+             if(amplitude>3000.0) trumpet.play(note);
      }
 
     };
-
-
+    //==============================================================================================
     @Override
     protected void onDestroy() {
         super.onDestroy();

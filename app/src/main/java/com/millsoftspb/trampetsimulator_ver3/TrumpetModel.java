@@ -11,12 +11,9 @@ public class TrumpetModel {
     public   int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
     private int currentSound = 0;
     private SoundPool sounds;
-    public long millSecond;
-
 
     //constructor trumpet
     public TrumpetModel(Context myContext) {
-
         AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -25,7 +22,7 @@ public class TrumpetModel {
                 .setAudioAttributes(attributes)
                 .build();
 
-        //filling the soundpool filling with sounds
+        //filling the soundpool with sounds
         soundA = sounds.load(myContext, R.raw.a4, 1);
         soundB = sounds.load(myContext, R.raw.b4, 1);
         soundC = sounds.load(myContext, R.raw.c4, 1);
@@ -33,23 +30,23 @@ public class TrumpetModel {
         soundE = sounds.load(myContext, R.raw.e4, 1);
         soundF = sounds.load(myContext, R.raw.f4, 1);
         soundG = sounds.load(myContext, R.raw.g4, 1);
-
     }
 
     //start play
     public void play(int sound){
-         if (currentSound!=sound || currentSound == 0) {
-             sounds.stop(currentSound);
-
-             sounds.play(sound, 1, 1, 0, -1, 1);
-
-             currentSound = sound;
-         }
+             if (currentSound!=sound) {
+                 sounds.stop(currentSound);
+                 currentSound = sound;
+                 sounds.play(currentSound, 1, 1, 0, -1, 1);
+             }
+             PlayActivity.textView3.setText("");
     }
 
     //stop play
     public void stop(){
-        if (currentSound!=0) sounds.autoPause();
+        sounds.setLoop(currentSound,0);
+        sounds.stop(currentSound);
+        PlayActivity.textView3.setText("STOP");
     }
 
     //destroy trumpet
@@ -57,5 +54,4 @@ public class TrumpetModel {
         if (sounds != null) sounds.release();
         sounds = null;
     }
-
 }
