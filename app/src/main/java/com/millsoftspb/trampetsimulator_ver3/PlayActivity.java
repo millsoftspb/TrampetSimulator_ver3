@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
+    //declaration
     static TextView textView, textView2, textView3, textTimerTick;//temp
     int tick = 0;//temp
     View mDecorView;
@@ -26,7 +27,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play);
 
         //temp
         textView = findViewById(R.id.textView);
@@ -124,37 +125,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             textView.setText(String.valueOf(amplitude));//temp
             textView3.setText("");//temp
 
-             //******D*******
-             if (isDownValve_1&!isDownValve_2&isDownValve_3) {
-                 note = trumpet.soundD;//  >=тТт=-
-                 textView2.setText(">=тТт=-");
-             }
-             //******F*******
-             if (isDownValve_1&!isDownValve_2&!isDownValve_3) {
-                 note = trumpet.soundF;//  >=TТт=-
-                 textView2.setText(">=TТт=-");
-             }
-             //******B*******
-             if (!isDownValve_1&isDownValve_2&!isDownValve_3) {
-                 note = trumpet.soundB;//  >=TтT=-
-                 textView2.setText(">=TтT=-");
-             }
-             //******E*******
-             if (isDownValve_1&isDownValve_2&!isDownValve_3) {
-                 note = trumpet.soundE;//  >=Tтт=-
-                 textView2.setText(">=Tтт=-");
-             }
-             //******A*******
-             if (isDownValve_1&isDownValve_2&!isDownValve_3) {
-                 note = trumpet.soundA;//  >=Tтт=-
-                 textView2.setText(">=Tтт=-");
-             }
-             //******C*******
-             if (!isDownValve_1&!isDownValve_2&!isDownValve_3) {
-                 note = trumpet.soundC;//  >=TTT=-
-                 textView2.setText(">=TTT=-");
-             }
-             if(amplitude>3000.0) trumpet.play(note);
+            if(amplitude>3000.0) trumpet.play(note);
      }
 
     };

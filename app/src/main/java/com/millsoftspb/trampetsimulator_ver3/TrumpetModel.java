@@ -8,7 +8,7 @@ import android.net.Uri;
 
 public class TrumpetModel {
 
-    public   int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
+    public  static int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
     private int currentSound = 0;
     private SoundPool sounds;
 
