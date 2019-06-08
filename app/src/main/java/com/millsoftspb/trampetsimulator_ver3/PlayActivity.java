@@ -13,16 +13,28 @@ import java.util.TimerTask;
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
     //declaration
-    static TextView textView, textView2, textView3, textTimerTick;//temp
-    int tick = 0;//temp
+    static TextView textView;//temp
     View mDecorView;
-    private ImageView valve_1, valve_2, valve_3;
     boolean isDownValve_1, isDownValve_2, isDownValve_3 = false;
     SoundMeter soundMeter;
-    private Timer myTimer;
     TrumpetModel trumpet;
-    private int note;
     double amplitude;
+    private ImageView valve_1, valve_2, valve_3;
+    private Timer myTimer;
+    private int note;
+    //==================================================================================================
+    private Runnable Timer_Tick = new Runnable() {
+        public void run() {
+            //get Mic amplitude
+            amplitude = soundMeter.getAmplitude();
+
+            if (amplitude <= 800.0) trumpet.stop();
+
+            textView.setText(String.valueOf(amplitude));//temp
+
+            if (amplitude > 800.0) trumpet.play(note);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +43,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         //temp
         textView = findViewById(R.id.textView);
-        textView2 = findViewById(R.id.textView2);
-        textView3 = findViewById(R.id.textView3);
-        textTimerTick = findViewById(R.id.textTimerTick);
 
         //init trumpet;
         trumpet = new TrumpetModel(this);
+        note = TrumpetModel.soundC;
 
         //init timer
         myTimer = new Timer();
@@ -46,7 +56,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 TimerMethod();
             }
 
-        }, 0, 100);
+        }, 0, 500);
 
         //init soundmeter
         soundMeter = new SoundMeter();
@@ -54,8 +64,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         //on FullScreen mode
         mDecorView = getWindow().getDecorView();
         mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        |View.SYSTEM_UI_FLAG_FULLSCREEN
-        |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         //init valve view
         valve_1 = findViewById(R.id.imageValve1);
@@ -65,13 +75,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         valve_3 = findViewById(R.id.imageValve3);
         valve_3.setOnTouchListener(this);
     }
+
     //==============================================================================================
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
             //**************Valve_1*******************
             case (R.id.imageValve1): {
-                if (event.getAction() == MotionEvent.ACTION_DOWN||event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                     isDownValve_1 = true;
                     valve_1.setImageResource(R.drawable.valve_png_down);
                 } else {
@@ -79,10 +90,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     valve_1.setImageResource(R.drawable.valve_png_up);
                 }
             }
+            note = NoteCalculation.calculate(isDownValve_1, isDownValve_2, isDownValve_3, 0);
             break;
+
             //**************Valve_2*******************
             case (R.id.imageValve2): {
-                if (event.getAction() == MotionEvent.ACTION_DOWN||event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                     isDownValve_2 = true;
                     valve_2.setImageResource(R.drawable.valve_png_down);
                 } else {
@@ -90,10 +103,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     valve_2.setImageResource(R.drawable.valve_png_up);
                 }
             }
+            note = NoteCalculation.calculate(isDownValve_1, isDownValve_2, isDownValve_3, 0);
             break;
+
             //**************Valve_3*******************
             case (R.id.imageValve3): {
-                if (event.getAction() == MotionEvent.ACTION_DOWN||event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                     isDownValve_3 = true;
                     valve_3.setImageResource(R.drawable.valve_png_down);
                 } else {
@@ -101,34 +116,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     valve_3.setImageResource(R.drawable.valve_png_up);
                 }
             }
+            note = NoteCalculation.calculate(isDownValve_1, isDownValve_2, isDownValve_3, 0);
             break;
-            //******************************************
+
         }
         return true;
     }
-//==================================================================================================
+
+    //==================================================================================================
     private void TimerMethod() {
         this.runOnUiThread(Timer_Tick);
     }
-    private Runnable Timer_Tick = new Runnable() {
-        public void run() {
 
-            //temp
-            tick = tick + 1;
-            textTimerTick.setText(String.valueOf(tick));
-
-            //get Mic amplitude
-            amplitude = soundMeter.getAmplitude();
-
-            if(amplitude<3000.0)trumpet.stop();
-
-            textView.setText(String.valueOf(amplitude));//temp
-            textView3.setText("");//temp
-
-            if(amplitude>3000.0) trumpet.play(note);
-     }
-
-    };
     //==============================================================================================
     @Override
     protected void onDestroy() {

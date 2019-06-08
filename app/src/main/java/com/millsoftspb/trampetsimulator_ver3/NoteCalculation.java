@@ -28,7 +28,7 @@ public class NoteCalculation {
 //        }
         //******C*******
         if (!valve_1 & !valve_2 & !valve_3) {
-            note = TrumpetModel.soundE;//  >=TТТ=-
+            note = TrumpetModel.soundC;//  >=TТТ=-
         }
             return note;
         }

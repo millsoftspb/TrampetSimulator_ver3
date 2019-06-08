@@ -2,13 +2,11 @@ package com.millsoftspb.trampetsimulator_ver3;
 
 import android.content.Context;
 import android.media.AudioAttributes;
-import android.media.MediaMetadataRetriever;
 import android.media.SoundPool;
-import android.net.Uri;
 
 public class TrumpetModel {
 
-    public  static int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
+    public static int soundA, soundB, soundC, soundD, soundE, soundF, soundG;
     private int currentSound = 0;
     private SoundPool sounds;
 
@@ -33,24 +31,22 @@ public class TrumpetModel {
     }
 
     //start play
-    public void play(int sound){
-             if (currentSound!=sound) {
-                 sounds.stop(currentSound);
-                 currentSound = sound;
-                 sounds.play(currentSound, 1, 1, 0, -1, 1);
-             }
-             PlayActivity.textView3.setText("");
+    public void play(int sound) {
+        if (currentSound != sound) {
+            sounds.stop(currentSound);
+            currentSound = sound;
+            sounds.play(currentSound, 1, 1, 0, 0, 1);
+        }
     }
 
     //stop play
-    public void stop(){
-        sounds.setLoop(currentSound,0);
-        sounds.stop(currentSound);
-        PlayActivity.textView3.setText("STOP");
+    public void stop() {
+            sounds.stop(currentSound);
+            currentSound = 0;
     }
 
     //destroy trumpet
-    public void destroy(){
+    public void destroy() {
         if (sounds != null) sounds.release();
         sounds = null;
     }
