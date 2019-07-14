@@ -22,17 +22,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private ImageView valve_1, valve_2, valve_3;
     private Timer myTimer;
     private int note;
-    //==================================================================================================
+    //==============================================================================================
+
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
             //get Mic amplitude
             amplitude = soundMeter.getAmplitude();
-
-            if (amplitude <= 800.0) trumpet.stop();
-
+            if (amplitude <= 8000.0) trumpet.stop();
             textView.setText(String.valueOf(amplitude));//temp
-
-            if (amplitude > 800.0) trumpet.play(note);
+            if (amplitude > 8000.0) trumpet.play(note);
         }
     };
 
@@ -123,12 +121,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         return true;
     }
 
-    //==================================================================================================
+    //==============================================================================================
     private void TimerMethod() {
         this.runOnUiThread(Timer_Tick);
     }
 
     //==============================================================================================
+    //pause
+    public void onPause(){
+        super.onPause();
+        if (trumpet != null) trumpet.destroy();
+        if (soundMeter != null) soundMeter.destroy();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
